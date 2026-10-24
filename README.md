@@ -89,6 +89,45 @@ The Python modules implement:
 - Division execution tracing
 - IEEE 754 single-precision decoding
 
+
+## Application Screenshots
+
+The following screenshots demonstrate the interactive
+arithmetic simulators available in the live application.
+
+### IEEE 754 Floating-Point Visualizer
+
+Explore binary floating-point representation, register
+bits, exponent calculations, and precision differences.
+
+<img src="docs/screenshots/floating-point.png"
+     alt="IEEE 754 Floating-Point Visualizer"
+     width="720">
+
+### Binary Multiplication Simulator
+
+Step through unsigned binary multiplication using
+shifts and addition while tracking the running result.
+
+<img src="docs/screenshots/multiplication.png"
+     alt="Binary Multiplication Simulator showing 13 times 5"
+     width="720">
+
+### Binary Division Simulator
+
+Explore binary long division with interactive execution
+steps, quotient calculations, and remainder tracking.
+
+<img src="docs/screenshots/division.png"
+     alt="Binary Division Simulator showing 13 divided by 3"
+     width="720">
+
+**[Try the Interactive Application](https://taragamache13.github.io/legv8-arithmetic-lab/)**
+
+---
+
+
+
 ## Technologies Used
 
 | Technology | Purpose |
