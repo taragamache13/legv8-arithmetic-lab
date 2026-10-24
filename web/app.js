@@ -583,3 +583,237 @@ function initializeMultiplication() {
 }
 
 initializeMultiplication();
+
+
+/* =========================================
+   Binary Division Simulator
+   ========================================= */
+
+function initializeDivision() {
+    const dividendInput =
+        document.getElementById("div-dividend");
+
+    const divisorInput =
+        document.getElementById("div-divisor");
+
+    const previousButton =
+        document.getElementById("div-prev");
+
+    const nextButton =
+        document.getElementById("div-next");
+
+    const runButton =
+        document.getElementById("div-run");
+
+    const resetButton =
+        document.getElementById("div-reset");
+
+    const message =
+        document.getElementById("div-message");
+
+    const progress =
+        document.getElementById("div-progress");
+
+    const quotientDisplay =
+        document.getElementById("div-quotient");
+
+    const remainderDisplay =
+        document.getElementById("div-remainder");
+
+    const tableBody =
+        document.getElementById("div-trace-body");
+
+    let steps = [];
+    let currentStep = 0;
+    let valid = false;
+
+    // Display the current division progress.
+    function renderDivision() {
+        tableBody.replaceChildren();
+
+        const visibleSteps = steps.slice(0, currentStep);
+
+        for (const step of visibleSteps) {
+            const row = document.createElement("tr");
+
+            const values = [
+                step.number,
+                step.bitPosition,
+                step.incomingBit,
+                step.subtracted ? "Yes" : "No",
+                step.quotient,
+                step.remainder
+            ];
+
+            for (const value of values) {
+                const cell = document.createElement("td");
+
+                cell.textContent = String(value);
+                row.appendChild(cell);
+            }
+
+            tableBody.appendChild(row);
+        }
+
+        if (currentStep === 0) {
+            quotientDisplay.textContent = "0";
+            remainderDisplay.textContent = "0";
+        } else {
+            const current = steps[currentStep - 1];
+
+            quotientDisplay.textContent = current.quotient;
+            remainderDisplay.textContent = current.remainder;
+        }
+
+        if (!valid) {
+            progress.textContent =
+                "Waiting for valid inputs.";
+
+        } else if (currentStep === 0) {
+            progress.textContent =
+                `Ready to begin. ${steps.length} steps available.`;
+
+        } else if (currentStep === steps.length) {
+            progress.textContent =
+                `Complete! ${currentStep} steps executed.`;
+
+        } else {
+            progress.textContent =
+                `Step ${currentStep} of ${steps.length}`;
+        }
+
+        previousButton.disabled =
+            !valid || currentStep === 0;
+
+        nextButton.disabled =
+            !valid || currentStep >= steps.length;
+
+        runButton.disabled =
+            !valid || currentStep >= steps.length;
+
+        resetButton.disabled =
+            !valid || currentStep === 0;
+    }
+
+    // Prepare binary long division.
+    function prepareDivision() {
+        const rawDividend = dividendInput.value.trim();
+        const rawDivisor = divisorInput.value.trim();
+
+        const a = Number(rawDividend);
+        const b = Number(rawDivisor);
+
+        valid =
+            rawDividend !== "" &&
+            rawDivisor !== "" &&
+            Number.isInteger(a) &&
+            Number.isInteger(b) &&
+            a >= 0 && a <= 65535 &&
+            b >= 1 && b <= 65535;
+
+        steps = [];
+        currentStep = 0;
+
+        if (!valid) {
+            message.textContent =
+                "Enter a dividend from 0 to 65535 " +
+                "and a divisor from 1 to 65535. " +
+                "Division by zero is not allowed.";
+
+            renderDivision();
+            return;
+        }
+
+        message.textContent = "";
+
+        const dividend = BigInt(a);
+        const divisor = BigInt(b);
+
+        let quotient = 0n;
+        let remainder = 0n;
+
+        // Process dividend bits from left to right.
+        const bitLength = Math.max(
+            1,
+            dividend.toString(2).length
+        );
+
+        for (
+            let bitIndex = bitLength - 1;
+            bitIndex >= 0;
+            bitIndex--
+        ) {
+            const incomingBit =
+                (dividend >> BigInt(bitIndex)) & 1n;
+
+            // Shift remainder left and bring in next bit.
+            remainder =
+                (remainder << 1n) | incomingBit;
+
+            // Compare remainder with divisor.
+            const subtracted = remainder >= divisor;
+
+            if (subtracted) {
+                remainder -= divisor;
+
+                quotient |= 1n << BigInt(bitIndex);
+            }
+
+            // Record each operation.
+            steps.push({
+                number: steps.length + 1,
+                bitPosition: bitIndex,
+                incomingBit: incomingBit.toString(),
+                subtracted: subtracted,
+                quotient: quotient.toString(),
+                remainder: remainder.toString()
+            });
+        }
+
+        renderDivision();
+    }
+
+    // Previous Step button
+    previousButton.addEventListener("click", () => {
+        if (currentStep > 0) {
+            currentStep--;
+            renderDivision();
+        }
+    });
+
+    // Next Step button
+    nextButton.addEventListener("click", () => {
+        if (currentStep < steps.length) {
+            currentStep++;
+            renderDivision();
+        }
+    });
+
+    // Run All button
+    runButton.addEventListener("click", () => {
+        currentStep = steps.length;
+        renderDivision();
+    });
+
+    // Reset button
+    resetButton.addEventListener("click", () => {
+        currentStep = 0;
+        renderDivision();
+    });
+
+    // Update when input numbers change.
+    dividendInput.addEventListener(
+        "input",
+        prepareDivision
+    );
+
+    divisorInput.addEventListener(
+        "input",
+        prepareDivision
+    );
+
+    // Initialize the division simulator.
+    prepareDivision();
+}
+
+initializeDivision();

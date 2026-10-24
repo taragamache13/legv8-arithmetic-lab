@@ -350,6 +350,114 @@
 
         </section>
   
+       
+        <!-- Interactive Binary Division Simulator -->
+
+        <section class="panel division-panel" id="division">
+
+            <h2>Binary Division Simulator</h2>
+
+            <p class="division-intro">
+                Explore binary long division using bit shifts,
+                comparisons, and subtraction. Step through
+                each operation to see how the quotient and
+                remainder are calculated.
+            </p>
+
+            <div class="division-inputs">
+
+                <div class="division-field">
+                    <label for="div-dividend">Dividend</label>
+                    <input
+                        id="div-dividend"
+                        type="number"
+                        min="0"
+                        max="65535"
+                        step="1"
+                        value="13"
+                    >
+                </div>
+
+                <div class="division-field">
+                    <label for="div-divisor">Divisor</label>
+                    <input
+                        id="div-divisor"
+                        type="number"
+                        min="1"
+                        max="65535"
+                        step="1"
+                        value="3"
+                    >
+                </div>
+
+            </div>
+
+            <p id="div-message" role="status"></p>
+
+            <div class="division-controls">
+
+                <button type="button" id="div-prev">
+                    Previous Step
+                </button>
+
+                <button type="button" id="div-next">
+                    Next Step
+                </button>
+
+                <button type="button" id="div-run">
+                    Run All
+                </button>
+
+                <button type="button" id="div-reset">
+                    Reset
+                </button>
+
+            </div>
+
+            <div class="division-trace">
+
+                <h3>Division Execution Trace</h3>
+
+                <p id="div-progress">
+                    Ready to begin.
+                </p>
+
+                <div class="division-table-wrapper">
+                    <table class="division-table">
+                        <thead>
+                            <tr>
+                                <th>Step</th>
+                                <th>Bit Position</th>
+                                <th>Incoming Bit</th>
+                                <th>Subtract?</th>
+                                <th>Quotient</th>
+                                <th>Remainder</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="div-trace-body">
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+            <div class="division-results">
+
+                <div class="division-result-card">
+                    <h3>Quotient</h3>
+                    <p id="div-quotient">0</p>
+                </div>
+
+                <div class="division-result-card">
+                    <h3>Remainder</h3>
+                    <p id="div-remainder">0</p>
+                </div>
+
+            </div>
+
+        </section>
+ 
 
     </main>
 
