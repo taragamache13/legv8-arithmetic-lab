@@ -1,0 +1,108 @@
+
+body {
+    font-family: Arial, sans-serif;
+    background: #101526;
+    color: #f1f5ff;
+    margin: 0;
+    padding: 30px 20px;
+}
+
+.container {
+    max-width: 900px;
+    margin: auto;
+}
+
+h1 {
+    color: #b5a1ff;
+}
+
+.subtitle {
+    color: #aebbd1;
+    line-height: 1.6;
+}
+
+.panel {
+    background: #1b2440;
+    border: 1px solid #384668;
+    border-radius: 16px;
+    padding: 25px;
+    margin-top: 30px;
+}
+
+label {
+    display: block;
+    margin-bottom: 12px;
+}
+
+input {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 350px;
+    padding: 12px;
+    font-size: 18px;
+    color: white;
+    background: #101526;
+    border: 1px solid #63749d;
+    border-radius: 8px;
+}
+
+input:focus {
+    outline: 2px solid #b5a1ff;
+}
+
+.bits {
+    display: grid;
+    grid-template-columns: 1fr 2fr 4fr;
+    gap: 8px;
+    margin: 25px 0;
+}
+
+.segment {
+    padding: 15px 8px;
+    border-radius: 8px;
+    text-align: center;
+    min-width: 0;
+}
+
+.segment span {
+    display: block;
+    margin-bottom: 12px;
+    font-size: 13px;
+}
+
+.segment strong {
+    font-family: monospace;
+    font-size: clamp(9px, 1.6vw, 16px);
+    overflow-wrap: anywhere;
+}
+
+.sign { background: #57408f; }
+.exponent { background: #165f86; }
+.fraction { background: #166b65; }
+
+.results {
+    background: #101a30;
+    padding: 18px;
+    border-radius: 10px;
+    line-height: 1.8;
+    overflow-wrap: anywhere;
+}
+
+.results strong {
+    color: #55d8cb;
+}
+
+#message {
+    color: #f5c978;
+}
+
+@media (max-width: 600px) {
+    .bits {
+        grid-template-columns: 1fr;
+    }
+
+    .segment strong {
+        font-size: 15px;
+    }
+}
+   
