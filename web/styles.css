@@ -947,3 +947,13 @@ html {
         transition: none;
     }
 }
+
+
+/* Keyboard accessibility for scrollable tables */
+
+.multiplication-table-wrapper:focus-visible,
+.division-table-wrapper:focus-visible {
+    outline: 2px solid #55d8cb;
+    outline-offset: 3px;
+    border-radius: 4px;
+}
