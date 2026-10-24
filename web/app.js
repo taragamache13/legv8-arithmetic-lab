@@ -181,6 +181,128 @@ function renderBitCells(bits) {
     }
     
 
+function updatePrecisionComparison(value) {
+    const bits32Element =
+        document.getElementById("float32-bits");
+
+    const bits64Element =
+        document.getElementById("float64-bits");
+
+    const value32Element =
+        document.getElementById("float32-value");
+
+    const value64Element =
+        document.getElementById("float64-value");
+
+    const note =
+        document.getElementById("precision-note");
+
+    // Clear the comparison when the input is invalid.
+    if (value === null) {
+        bits32Element.textContent = "—";
+        bits64Element.textContent = "—";
+        value32Element.textContent = "—";
+        value64Element.textContent = "—";
+
+        note.textContent =
+            "Enter a valid number to compare precision.";
+
+        return;
+    }
+
+    // Create a buffer for IEEE 754 encoding.
+    const buffer = new ArrayBuffer(8);
+    const view = new DataView(buffer);
+
+    // Encode the number as a 32-bit float.
+    view.setFloat32(0, value, false);
+
+    const stored32 = view.getFloat32(0, false);
+
+    const bits32 = view.getUint32(0, false)
+        .toString(2)
+        .padStart(32, "0");
+
+    // Encode the number as a 64-bit float.
+    view.setFloat64(0, value, false);
+
+    const stored64 = view.getFloat64(0, false);
+
+    const bits64 =
+        view.getUint32(0, false)
+            .toString(2).padStart(32, "0") +
+        view.getUint32(4, false)
+            .toString(2).padStart(32, "0");
+
+    // Display color-coded sign, exponent, and fraction.
+    function displayBits(element, bits, exponentLength) {
+        element.replaceChildren();
+
+        const sections = [
+            {
+                className: "precision-sign",
+                text: bits.slice(0, 1)
+            },
+            {
+                className: "precision-exponent",
+                text: bits.slice(1, 1 + exponentLength)
+            },
+            {
+                className: "precision-fraction",
+                text: bits.slice(1 + exponentLength)
+            }
+        ];
+
+        for (const section of sections) {
+            const span = document.createElement("span");
+
+            span.className = section.className;
+            span.textContent = section.text;
+
+            element.append(
+                span,
+                document.createTextNode(" ")
+            );
+        }
+    }
+
+    displayBits(bits32Element, bits32, 8);
+    displayBits(bits64Element, bits64, 11);
+
+    // Display the stored decimal values.
+    value32Element.textContent =
+        Object.is(stored32, -0)
+            ? "-0"
+            : String(stored32);
+
+    value64Element.textContent =
+        Object.is(stored64, -0)
+            ? "-0"
+            : String(stored64);
+
+    // Explain the precision difference.
+    if (!Number.isFinite(stored32)) {
+        note.textContent =
+            "This value is too large for finite 32-bit " +
+            "floating-point storage, but fits in 64 bits.";
+
+    } else if (Object.is(stored32, stored64)) {
+        note.textContent =
+            "Both formats produce the same numerical value " +
+            "for this input. This does not mean every " +
+            "decimal number can be stored exactly.";
+
+    } else {
+        note.textContent =
+            "The 32-bit representation has less precision " +
+            "and rounds the value differently. " +
+            "The 64-bit representation retains more " +
+            "significant digits. At 17 decimal digits, " +
+            "the 64-bit value is " +
+            stored64.toPrecision(17) + ".";
+    }
+}
+
 
 
 
@@ -202,6 +324,7 @@ function updateDisplay() {
 
         renderBitCells(null);
         updateCalculation(null, null);
+        updatePrecisionComparison(null);
         return;
     }
 
@@ -271,6 +394,7 @@ function updateDisplay() {
             : "";
     renderBitCells(bits);
     updateCalculation(bits, stored);
+    updatePrecisionComparison(value);
 }
 
 input.addEventListener("input", updateDisplay);

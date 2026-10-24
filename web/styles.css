@@ -317,4 +317,147 @@ input:focus {
         padding: 18px 12px;
     }
 }
+
+/* =========================================
+   32-Bit vs 64-Bit Precision Comparison
+   ========================================= */
+
+.precision-panel {
+    margin-top: 30px;
+    padding: 25px;
+    background: #131d33;
+    border: 1px solid #384668;
+    border-radius: 12px;
+}
+
+.precision-panel h3 {
+    color: #b5a1ff;
+    margin-top: 0;
+}
+
+.precision-intro {
+    color: #aebbd1;
+    line-height: 1.6;
+    margin-bottom: 25px;
+}
+
+/* Side-by-side comparison cards */
+
+.precision-comparison {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.precision-card {
+    min-width: 0;
+    padding: 20px;
+    background: #1b2440;
+    border: 1px solid #384668;
+    border-radius: 12px;
+    transition: border-color 0.3s, transform 0.3s;
+}
+
+.precision-card:hover {
+    border-color: #55d8cb;
+    transform: translateY(-3px);
+}
+
+.precision-card h4 {
+    color: #b5a1ff;
+    font-size: 20px;
+    margin: 0 0 8px;
+}
+
+.precision-type {
+    color: #aebbd1;
+    font-size: 13px;
+    margin-bottom: 20px;
+}
+
+.precision-card p {
+    line-height: 1.7;
+    overflow-wrap: anywhere;
+}
+
+.precision-card strong {
+    color: #55d8cb;
+}
+
+/* Binary representation */
+
+.precision-bits {
+    background: #101526;
+    border: 1px solid #384668;
+    border-radius: 8px;
+    padding: 15px 12px;
+    margin-bottom: 20px;
+
+    font-family: monospace;
+    font-size: 13px;
+    line-height: 1.9;
+
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+/* Color-coded IEEE 754 fields */
+
+.precision-sign {
+    color: #d3b8ff;
+}
+
+.precision-exponent {
+    color: #70c9ff;
+}
+
+.precision-fraction {
+    color: #55d8cb;
+}
+
+/* Explanation underneath the cards */
+
+.precision-explanation {
+    margin-top: 25px;
+    padding: 20px;
+    background: #101a30;
+    border-left: 4px solid #16a69a;
+    border-radius: 10px;
+}
+
+.precision-explanation h4 {
+    color: #55d8cb;
+    margin-top: 0;
+}
+
+.precision-explanation p {
+    color: #dce4f4;
+    line-height: 1.7;
+    margin-bottom: 0;
+}
+
+/* Responsive mobile layout */
+
+@media (max-width: 700px) {
+    .precision-panel {
+        padding: 15px;
+    }
+
+    .precision-comparison {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .precision-card {
+        padding: 15px;
+    }
+
+    .precision-bits {
+        font-size: 12px;
+    }
+
+    .precision-explanation {
+        padding: 15px;
+    }
+}
    
