@@ -218,3 +218,10 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Node.js dependencies
+node_modules/
+
+# Playwright test outputs
+playwright-reports/
+test-results/

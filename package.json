@@ -1,0 +1,27 @@
+{
+  "name": "legv8-arithmetic-lab",
+  "version": "1.0.0",
+  "description": "Interactive ARM/LEGv8 arithmetic and computer architecture built with Python",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/taragamache13/legv8-arithmetic-lab.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/taragamache13/legv8-arithmetic-lab/issues"
+  },
+  "homepage": "https://github.com/taragamache13/legv8-arithmetic-lab#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.64.1"
+  }
+}
