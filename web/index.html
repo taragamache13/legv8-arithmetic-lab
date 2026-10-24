@@ -248,6 +248,109 @@
 
         </section>
 
+      
+        <!-- Interactive Binary Multiplication Simulator -->
+
+        <section class="panel multiplication-panel"
+                id="multiplication">
+
+            <h2>Binary Multiplication Simulator</h2>
+
+            <p class="multiplication-intro">
+                Explore how binary multiplication works using
+                bit shifting and addition. Step through each
+                operation to see how the result is calculated.
+            </p>
+
+            <div class="multiplication-inputs">
+
+                <div class="multiplication-field">
+                    <label for="mult-a">Multiplicand</label>
+                    <input
+                        id="mult-a"
+                        type="number"
+                        min="0"
+                        max="65535"
+                        step="1"
+                        value="13"
+                    >
+                </div>
+
+                <div class="multiplication-field">
+                    <label for="mult-b">Multiplier</label>
+                    <input
+                        id="mult-b"
+                        type="number"
+                        min="0"
+                        max="65535"
+                        step="1"
+                        value="5"
+                    >
+                </div>
+
+            </div>
+
+            <p id="mult-message" role="status"></p>
+
+            <div class="multiplication-controls">
+
+                <button type="button" id="mult-prev">
+                    Previous Step
+                </button>
+
+                <button type="button" id="mult-next">
+                    Next Step
+                </button>
+
+                <button type="button" id="mult-run">
+                    Run All
+                </button>
+
+                <button type="button" id="mult-reset">
+                    Reset
+                </button>
+
+            </div>
+
+            <div class="multiplication-trace">
+
+                <h3>Execution Trace</h3>
+
+                <p id="mult-progress">
+                    Ready to begin.
+                </p>
+
+                <div class="multiplication-table-wrapper">
+                    <table class="multiplication-table">
+                        <thead>
+                            <tr>
+                                <th>Step</th>
+                                <th>Multiplicand</th>
+                                <th>Multiplier</th>
+                                <th>Bit</th>
+                                <th>Added</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="mult-trace-body">
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+            <div class="multiplication-result">
+
+                <h3>Running Result</h3>
+
+                <p id="mult-result">0</p>
+
+            </div>
+
+        </section>
+  
+
     </main>
 
     <script src="./app.js" defer></script>>

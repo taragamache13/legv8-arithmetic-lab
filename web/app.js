@@ -400,3 +400,186 @@ function updateDisplay() {
 input.addEventListener("input", updateDisplay);
 
 updateDisplay();
+
+
+/* =========================================
+   Binary Multiplication Simulator
+   ========================================= */
+
+function initializeMultiplication() {
+    const inputA = document.getElementById("mult-a");
+    const inputB = document.getElementById("mult-b");
+
+    const previousButton =
+        document.getElementById("mult-prev");
+    const nextButton =
+        document.getElementById("mult-next");
+    const runButton =
+        document.getElementById("mult-run");
+    const resetButton =
+        document.getElementById("mult-reset");
+
+    const message = document.getElementById("mult-message");
+    const progress = document.getElementById("mult-progress");
+    const result = document.getElementById("mult-result");
+    const tableBody =
+        document.getElementById("mult-trace-body");
+
+    let steps = [];
+    let currentStep = 0;
+    let valid = false;
+
+    // Display the current multiplication progress.
+    function renderMultiplication() {
+        tableBody.replaceChildren();
+
+        const visibleSteps = steps.slice(0, currentStep);
+
+        for (const step of visibleSteps) {
+            const row = document.createElement("tr");
+
+            const values = [
+                step.number,
+                step.a,
+                step.b,
+                step.bit,
+                step.added,
+                step.total
+            ];
+
+            for (const value of values) {
+                const cell = document.createElement("td");
+                cell.textContent = String(value);
+                row.appendChild(cell);
+            }
+
+            tableBody.appendChild(row);
+        }
+
+        result.textContent = currentStep === 0
+            ? "0"
+            : steps[currentStep - 1].total;
+
+        if (!valid) {
+            progress.textContent = "Waiting for valid inputs.";
+        } else if (steps.length === 0) {
+            progress.textContent =
+                "Multiplier is zero. Result is 0.";
+        } else if (currentStep === 0) {
+            progress.textContent =
+                `Ready to begin. ${steps.length} steps available.`;
+        } else if (currentStep === steps.length) {
+            progress.textContent =
+                `Complete! ${currentStep} steps executed.`;
+        } else {
+            progress.textContent =
+                `Step ${currentStep} of ${steps.length}`;
+        }
+
+        previousButton.disabled =
+            !valid || currentStep === 0;
+
+        nextButton.disabled =
+            !valid || currentStep >= steps.length;
+
+        runButton.disabled =
+            !valid || currentStep >= steps.length;
+
+        resetButton.disabled =
+            !valid || currentStep === 0;
+    }
+
+    // Prepare the shift-and-add multiplication steps.
+    function prepareMultiplication() {
+        const rawA = inputA.value.trim();
+        const rawB = inputB.value.trim();
+
+        const a = Number(rawA);
+        const b = Number(rawB);
+
+        valid =
+            rawA !== "" &&
+            rawB !== "" &&
+            Number.isInteger(a) &&
+            Number.isInteger(b) &&
+            a >= 0 && a <= 65535 &&
+            b >= 0 && b <= 65535;
+
+        steps = [];
+        currentStep = 0;
+
+        if (!valid) {
+            message.textContent =
+                "Enter two whole numbers between 0 and 65535.";
+            renderMultiplication();
+            return;
+        }
+
+        message.textContent = "";
+
+        let multiplicand = BigInt(a);
+        let multiplier = BigInt(b);
+        let total = 0n;
+
+        while (multiplier > 0n) {
+            const bit = multiplier & 1n;
+
+            const added = bit === 1n
+                ? multiplicand
+                : 0n;
+
+            total += added;
+
+            steps.push({
+                number: steps.length + 1,
+                a: multiplicand.toString(),
+                b: multiplier.toString(),
+                bit: bit.toString(),
+                added: added.toString(),
+                total: total.toString()
+            });
+
+            multiplicand <<= 1n;
+            multiplier >>= 1n;
+        }
+
+        renderMultiplication();
+    }
+
+    // Previous Step button
+    previousButton.addEventListener("click", () => {
+        if (currentStep > 0) {
+            currentStep--;
+            renderMultiplication();
+        }
+    });
+
+    // Next Step button
+    nextButton.addEventListener("click", () => {
+        if (currentStep < steps.length) {
+            currentStep++;
+            renderMultiplication();
+        }
+    });
+
+    // Run All button
+    runButton.addEventListener("click", () => {
+        currentStep = steps.length;
+        renderMultiplication();
+    });
+
+    // Reset button
+    resetButton.addEventListener("click", () => {
+        currentStep = 0;
+        renderMultiplication();
+    });
+
+    // Recalculate when input values change.
+    inputA.addEventListener("input", prepareMultiplication);
+    inputB.addEventListener("input", prepareMultiplication);
+
+    // Initialize the simulator.
+    prepareMultiplication();
+}
+
+initializeMultiplication();
