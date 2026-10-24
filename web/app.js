@@ -75,6 +75,113 @@ function renderBitCells(bits) {
         });
     }
 }
+   
+   
+    function updateCalculation(bits, stored) {
+        const ids = [
+            "calc-sign",
+            "calc-exponent",
+            "calc-significand",
+            "calc-formula",
+            "calc-result"
+        ];
+
+        // Clear the calculation for invalid input.
+        if (!bits) {
+            ids.forEach(id => {
+                document.getElementById(id).textContent = "—";
+            });
+            return;
+        }
+
+        // Extract IEEE 754 fields.
+        const signBit = bits[0];
+        const exponentBits = bits.slice(1, 9);
+        const fractionBits = bits.slice(9);
+
+        const biasedExponent = parseInt(exponentBits, 2);
+        const fractionRaw = parseInt(fractionBits, 2);
+
+        const signFactor = signBit === "1" ? -1 : 1;
+
+        // STEP 1: Sign
+        document.getElementById("calc-sign").textContent =
+            `Sign bit = ${signBit}. ` +
+            `Sign factor = ${signFactor}. ` +
+            `The number has a ${signBit === "1" ? "negative" : "positive"} sign.`;
+
+        // STEP 2 and 3: Exponent and significand
+        let actualExponent;
+        let significand;
+
+        if (biasedExponent === 0) {
+            actualExponent = -126;
+            significand = fractionRaw / (2 ** 23);
+
+            document.getElementById("calc-exponent").textContent =
+                "The stored exponent is 0. " +
+                "For zero and subnormal values, the exponent field " +
+                "uses the special zero encoding.";
+
+            document.getElementById("calc-significand").textContent =
+                `No implicit leading 1. ` +
+                `Significand = ${fractionRaw} / 2^23 = ${significand}`;
+
+        } else if (biasedExponent === 255) {
+            // Infinity or NaN
+            const special = fractionRaw === 0 ? "Infinity" : "NaN";
+
+            document.getElementById("calc-exponent").textContent =
+                "All exponent bits are 1, indicating a special value.";
+
+            document.getElementById("calc-significand").textContent =
+                `Special classification: ${special}`;
+
+            document.getElementById("calc-formula").textContent =
+                "The normal floating-point formula does not apply.";
+
+            document.getElementById("calc-result").textContent =
+                String(stored);
+
+            return;
+
+        } else {
+            actualExponent = biasedExponent - 127;
+            significand = 1 + fractionRaw / (2 ** 23);
+
+            document.getElementById("calc-exponent").textContent =
+                `Biased exponent = ${biasedExponent}. ` +
+                `Actual exponent = ${biasedExponent} - 127 = ${actualExponent}`;
+
+            document.getElementById("calc-significand").textContent =
+                `Implicit leading 1 + fraction. ` +
+                `Significand = 1 + ${fractionRaw} / 2^23 = ${significand}`;
+        }
+
+        // STEP 4: Reconstruct the value
+        const reconstructed =
+            signFactor * significand * (2 ** actualExponent);
+
+        let formula;
+
+        if (biasedExponent === 0 && fractionRaw === 0) {
+            formula = `Signed zero: ${signFactor} × 0 = ` +
+                (signBit === "1" ? "-0" : "0");
+        } else {
+            formula =
+                `(${signFactor}) × ${significand} × ` +
+                `2^${actualExponent} = ${reconstructed}`;
+        }
+
+        document.getElementById("calc-formula").textContent =
+            formula;
+
+        document.getElementById("calc-result").textContent =
+            Object.is(stored, -0) ? "-0" : String(stored);
+    }
+    
+
+
 
 
 function updateDisplay() {
@@ -94,6 +201,7 @@ function updateDisplay() {
         }
 
         renderBitCells(null);
+        updateCalculation(null, null);
         return;
     }
 
@@ -161,7 +269,8 @@ function updateDisplay() {
         !Number.isFinite(stored)
             ? "This number exceeds the finite float32 range."
             : "";
-            renderBitCells(bits);
+    renderBitCells(bits);
+    updateCalculation(bits, stored);
 }
 
 input.addEventListener("input", updateDisplay);
