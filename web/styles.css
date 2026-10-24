@@ -857,3 +857,93 @@ input:focus {
     }
 }
  
+/* =========================================
+   Main Simulator Navigation
+   ========================================= */
+
+/* Smooth navigation between sections */
+
+html {
+    scroll-behavior: smooth;
+}
+
+#floating-point,
+#multiplication,
+#division {
+    scroll-margin-top: 20px;
+}
+
+/* Navigation container */
+
+.main-navigation {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 30px 0;
+    padding: 15px;
+    background: #1b2440;
+    border: 1px solid #384668;
+    border-radius: 12px;
+}
+
+/* Individual navigation links */
+
+.nav-link {
+    display: inline-block;
+    padding: 12px 20px;
+    background: #263456;
+    color: #dce4f4;
+    border: 1px solid #384668;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    transition:
+        background 0.2s,
+        border-color 0.2s,
+        transform 0.2s;
+}
+
+/* Hover effect */
+
+.nav-link:hover {
+    background: #493184;
+    border-color: #b5a1ff;
+    transform: translateY(-2px);
+}
+
+/* Keyboard accessibility */
+
+.nav-link:focus-visible {
+    outline: 2px solid #55d8cb;
+    outline-offset: 3px;
+}
+
+/* Mobile navigation */
+
+@media (max-width: 600px) {
+    .main-navigation {
+        flex-direction: column;
+        gap: 10px;
+        padding: 12px;
+    }
+
+    .nav-link {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 14px;
+    }
+}
+
+/* Respect reduced-motion preferences */
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    .nav-link {
+        transition: none;
+    }
+}
