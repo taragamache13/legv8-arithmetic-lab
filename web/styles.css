@@ -105,4 +105,108 @@ input:focus {
         font-size: 15px;
     }
 }
+
+/* =========================================
+   Interactive 32-Bit Register Display
+   ========================================= */
+
+.register-detail {
+    margin-top: 30px;
+    padding: 20px;
+    background: #131d33;
+    border: 1px solid #384668;
+    border-radius: 12px;
+}
+
+.register-detail h3 {
+    color: #b5a1ff;
+}
+
+.register-help {
+    color: #aebbd1;
+}
+
+.register-group {
+    margin-top: 22px;
+}
+
+.register-group h4 {
+    color: #dce4f4;
+    margin-bottom: 12px;
+}
+
+/* Layout for individual binary bits */
+
+.bit-grid {
+    display: grid;
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    gap: 5px;
+    max-width: 560px;
+}
+
+/* Individual bit buttons */
+
+.bit-cell {
+    min-width: 0;
+    padding: 10px 0;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    color: white;
+    font-family: monospace;
+    font-size: 15px;
+    cursor: pointer;
+    transition: transform 0.2s, border-color 0.2s;
+}
+
+.bit-cell:hover {
+    transform: translateY(-3px);
+    border-color: #ffffff;
+}
+
+.bit-cell:focus-visible {
+    outline: 2px solid #ffffff;
+    outline-offset: 2px;
+}
+
+/* Color-coded register sections */
+
+.sign-cell {
+    background: #57408f;
+}
+
+.exponent-cell {
+    background: #165f86;
+}
+
+.fraction-cell {
+    background: #166b65;
+}
+
+/* Bit explanation panel */
+
+#bit-details {
+    margin-top: 25px;
+    padding: 15px;
+    border-radius: 8px;
+    background: #101526;
+    color: #55d8cb;
+    line-height: 1.6;
+}
+
+/* Mobile adjustments */
+
+@media (max-width: 600px) {
+    .register-detail {
+        padding: 12px;
+    }
+
+    .bit-grid {
+        gap: 3px;
+    }
+
+    .bit-cell {
+        font-size: 13px;
+        padding: 9px 0;
+    }
+}
    
